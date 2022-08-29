@@ -1,0 +1,78 @@
+  <strings>
+    <Admin>
+        <user_login>Sign-in</user_login>
+        <edit_user>Edit User</edit_user>
+        <add_user>Add User</add_user>
+        <delete_user>Delete User</delete_user>
+        <search>Search User</search>
+        <view_list>View user list</view_list>
+        <input_id>Enter User ID : </input_id>
+        <add_date>Enter a date in YYYY-MM-DD format : </add_date>
+
+    </Admin>
+    <User>
+        <view_data>Search Data</view_data>
+        <username>Enter username</username>
+
+    </User>
+    <queries>
+        <login>
+            select u.id, u._password, r.role_id
+            from user_details as u
+            inner join role_mapping as r
+            where u.id={0} and u.id=r.user_id
+        </login>
+        <show_details>
+            select u.*, d.*, vd.name
+            from user_details as u
+            inner join dose_info_mapping  as dm
+            on u.id=dm.user_id
+            inner join dose_details as d
+            on dm.dose_id=d.id
+            inner join vaccine_details as vd
+            on dm.vaccine_id=vd.id
+            where u.id="{0}"
+        </show_details>
+        <add_user>
+            insert into user_details(id, user_name, dob, contact, gender, _password)
+            values("{0}", "{1}", "{2}", "{3}", "{4}", "{5}");
+        </add_user>
+        <delete_user>
+            delete from user_details where id = {0}
+        </delete_user>
+        <update_user>
+            update user_details set user_name = "{0}" , dob = "{1}" , contact = "{2}" , gender = "{3}" , _password = "{4}"
+        </update_user>
+        <view_list>
+            select id, user_name
+            from user_details
+        </view_list>
+        <search_user>
+            select *
+            from user_details
+            where id="{0}" or user_name="{0}"
+        </search_user>
+        <enter_dose_info>
+            insert into dose_details(id , date , dose_type)
+            values("{0}" , "{1}" , "{2}" )
+        </enter_dose_info>
+        <dose_info_mapping>
+            insert into dose_info_mapping(user_id , dose_id , vaccine_id)
+            values( "{0}" , "{1}" , "{2}" )
+        </dose_info_mapping>
+        <default_role>
+            insert into role_mapping(user_id, role_id)
+            values("{0}", "{1}")
+        </default_role>
+        <check_if_exists>
+            select exists(select 1 from user_details where id="{0}")
+        </check_if_exists>
+         <next_dose>
+            select exists(select 1 from dose_info_mapping where user_id="{0}")
+        </next_dose>
+    </queries>
+<Fail><no_record>
+[bold red]NO RECORDS FOUND![/bold red]
+</no_record></Fail>
+       
+</strings>
